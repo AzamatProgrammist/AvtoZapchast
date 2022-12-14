@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ShopsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,9 @@ Route::get('/admin/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+Route::prefix('admin')->middleware('auth')->name('admin.')->group(function(){
+    
+    Route::resource('shops', ShopsController::class);
+
+});

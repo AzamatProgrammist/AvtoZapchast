@@ -19,7 +19,7 @@
             </li>
             <!-- @endrole -->
             <li class="dropdown">
-              <a href="#" class="nav-link"><i data-feather="monitor"></i><span>Shops</span></a>
+              <a href="{{ route('admin.shops.index') }}" class="nav-link"><i data-feather="monitor"></i><span>Shops</span></a>
             </li>
           </ul>
         </aside>
