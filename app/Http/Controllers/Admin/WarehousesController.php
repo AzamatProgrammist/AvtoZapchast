@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Warehouse;
 use App\Models\Shop;
-use App\Models\User;
 use Str;
 
-class ShopsController extends Controller
+class WarehousesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class ShopsController extends Controller
      */
     public function index()
     {
-        $shops = Shop::paginate(10);
-        return view('admin.shops.index', ['shops'=>$shops]);
+        $warehouses = Warehouse::paginate(10);
+        return view('admin.warehouses.index', compact('warehouses'));
     }
 
     /**
@@ -28,8 +28,8 @@ class ShopsController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        return view('admin.shops.create', compact('users'));
+        $shops = Shop::all();
+        return view('admin.warehouses.create', compact('shops'));
     }
 
     /**
@@ -41,16 +41,13 @@ class ShopsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name_uz' => 'required',
-            'user_id' => 'required',
+            'name' => 'required',
+            'shop_id' => 'required',
         ]);
-        $admin = User::find($request->user_id)->name;
-        
         $requestDsta=$request->all();
-        $requestDsta['slug']=Str::slug($requestDsta['name_uz']);
-        $requestDsta['admin'] = $admin;
-        Shop::create($requestDsta);
-        return redirect()->route('admin.shops.index')->with('success', 'Shop created successfully');
+        $requestDsta['slug']=Str::slug($requestDsta['name']);
+        Warehouse::create($requestDsta);
+        return redirect()->route('admin.warehouses.index')->with('success', 'Shop created successfully');
     }
 
     /**
@@ -93,9 +90,8 @@ class ShopsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Shop $shop)
+    public function destroy($id)
     {
-        $shop->delete();
-        return redirect()->route('admin.shops.index')->with('success', 'Category deleted successfully');
+        //
     }
 }

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ShopsController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\WarehousesController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +31,6 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function(){
     
     Route::resource('shops', ShopsController::class);
     Route::resource('users', UsersController::class);
+    Route::resource('warehouses', WarehousesController::class);
 
 });

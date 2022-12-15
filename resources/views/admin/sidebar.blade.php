@@ -21,6 +21,9 @@
             <li class="dropdown">
               <a href="{{ route('admin.shops.index') }}" class="nav-link"><i data-feather="monitor"></i><span>Shops</span></a>
             </li>
+            <li class="dropdown">
+              <a href="{{ route('admin.warehouses.index') }}" class="nav-link"><i data-feather="monitor"></i><span>Warehouses</span></a>
+            </li>
           </ul>
         </aside>
       </div>

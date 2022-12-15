@@ -8,5 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Shop extends Model
 {
     use HasFactory;
-    protected $fillable = ['name_uz', 'slug', 'admin', 'user_id', 'mete_title', 'mete_description', 'mete_keywords'];
+    protected $fillable = ['name_uz', 'slug', 'admin', 'user_id', 'meta_title', 'meta_description', 'meta_keywords'];
+
+
+    public function warehouses(){
+        return $this->hasMany(Warehouse::class);
+    }
+
 }
