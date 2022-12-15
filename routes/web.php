@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ShopsController;
+use App\Http\Controllers\Admin\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,5 +28,6 @@ require __DIR__.'/auth.php';
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function(){
     
     Route::resource('shops', ShopsController::class);
+    Route::resource('users', UsersController::class);
 
 });

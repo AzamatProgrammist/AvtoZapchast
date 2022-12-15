@@ -1,29 +1,33 @@
 @extends('layouts.admin')
 
 @section('title')
-    Create category
+    Create shop
 @endsection
 
 @section('content')
 
 <div class="row">
     <div class="col-12 col-md-12 col-lg-12">
-      <form method="POST" action="{{ route('admin.categories.store')}}">
+      <form method="POST" action="{{ route('admin.shops.store')}}">
         @csrf
       <div class="card">
           <div class="card-header">
-            <h4>Create category</h4>
+            <h4>Create shop</h4>
           </div>
         <div class="card-body">
           <div class="form-group">
-            <label>Name (UZ)</label>
+            <label>Name</label>
             <input type="text" name="name_uz" class="form-control @error('name_uz') is-invalid @enderror">
             @error('name_uz')<div class="invalid-feedback">Oh no! This is invalid.</div>@enderror
           </div>
           <div class="form-group">
-            <label>Name (RU)</label>
-            <input type="text" name="name_ru" class="form-control @error('name_ru') is-invalid @enderror">
-             @error('name_ru')<div class="invalid-feedback">Oh no! This is invalid.</div>@enderror
+            <label>Admin</label>
+            <select name="user_id" id="" class="form-control">
+              <option>Select Admin</option>
+              @foreach($users as $user)
+              <option value="{{ $user->id }}">{{ $user->name }}</option>
+              @endforeach
+            </select>
           </div>
           <div class="form-group">
             <label>Meta title</label>

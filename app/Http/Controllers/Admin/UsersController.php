@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Shop;
 use App\Models\User;
-use Str;
 
-class ShopsController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +15,8 @@ class ShopsController extends Controller
      */
     public function index()
     {
-        $shops = Shop::paginate(10);
-        return view('admin.shops.index', ['shops'=>$shops]);
+        $users = User::all();
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -28,8 +26,7 @@ class ShopsController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        return view('admin.shops.create', compact('users'));
+        //
     }
 
     /**
@@ -40,18 +37,7 @@ class ShopsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name_uz' => 'required',
-            'user_id' => 'required',
-            'ombor' => 'required',
-        ]);
-        $admin = User::find($request->user_id)->name;
-        
-        $requestDsta=$request->all();
-        $requestDsta['slug']=Str::slug($requestDsta['name_uz']);
-        $requestDsta['admin'] = $admin;
-        Shop::create($requestDsta);
-        return redirect()->route('admin.shops.index')->with('success', 'Shop created successfully');
+        //
     }
 
     /**
@@ -62,7 +48,8 @@ class ShopsController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -94,9 +81,8 @@ class ShopsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Shop $shop)
+    public function destroy($id)
     {
-        $shop->delete();
-        return redirect()->route('admin.shops.index')->with('success', 'Category deleted successfully');
+        //
     }
 }
