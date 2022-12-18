@@ -22,15 +22,6 @@ class CreateProductsTable extends Migration
             $table->string('model')->nullable();
             $table->string('brendi')->nullable();
             $table->string('markasi')->nullable();
-            $table->string('chiqqan_yili')->nullable();
-            $table->string('kelgan_yili')->nullable();
-            $table->string('size')->nullable();
-            $table->string('full_prize')->nullable();
-            $table->string('sotish_narxi')->nullable();
-            $table->string('olingan_narxi')->nullable();
-            $table->string('weight')->nullable();
-            $table->string('yuk_narxi')->nullable();
-            $table->integer('soni')->nullable();
             $table->integer('ombor_id');
             $table->integer('shop_id')->nullable();
             $table->integer('user_id')->nullable();
@@ -48,4 +39,3 @@ class CreateProductsTable extends Migration
         Schema::dropIfExists('products');
     }
 }
-

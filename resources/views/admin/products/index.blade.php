@@ -13,6 +13,17 @@
               <h4>Products</h4>
               <div class="card-header-form">
                 <a href="{{ route('admin.products.create') }}" class="btn btn-primary">Qo'shish</a>
+                <div class="dropdown d-inline mr-2">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Ombor qo'shish
+                            </button>
+                      <div class="dropdown-menu">
+                        @foreach($products as $product)
+                        <a class="dropdown-item" href="{{ route('admin.products.create', $product->id) }}">{{ $product->name }}</a>
+                        @endforeach
+                      </div>
+                    </div>
               </div>
             </div>
             @if(session('success'))
