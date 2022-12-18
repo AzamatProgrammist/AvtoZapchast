@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Warehouses
+    Omborlar
 @endsection
 
 @section('content')
@@ -9,12 +9,22 @@
 <div class="row">
               <div class="col-12 col-md-6 col-lg-12">
                 <div class="card">
-                  <div class="card-header">
-                    <h4>Warehouses</h4>
+                  <div class="card-body">
+                    <div class="card-header">
+                    <h4>Omborlar</h4>
                     <div class="card-header-form">
-                      <a href="{{ route('admin.warehouses.create') }}" class="btn btn-primary">Create</a>
+                      <div class="dropdown d-inline mr-2">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Ombor qo'shish
+                            </button>
+                      <div class="dropdown-menu">
+                        @foreach($shops as $shop)
+                        <a class="dropdown-item" href="{{ route('admin.warehouses.create', $shop->id) }}">{{ $shop->name_uz }}</a>
+                        @endforeach
+                      </div>
                     </div>
-                    
+                    </div>
                   </div>
                   @if(session('success'))
                     <div class="alert alert-success alert-dismissible show fade col-lg-4">
@@ -39,7 +49,7 @@
                         <tr>
                           <td>{{ $loop->iteration }}</td>
                           <td>{{ $warehouse->name }}</td>
-                          <td>{{ $warehouse->shop_id }}</td>
+                          <td>{{ $warehouse->shop->name_uz }}</td>
                           <td>
                             
                             <a href="{{ route('admin.warehouses.edit', $warehouse->id) }}" class="btn btn-info">Edit</a>

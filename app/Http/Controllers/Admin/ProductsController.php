@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Shop;
 
-class UsersController extends Controller
+class ProductsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +17,9 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('admin.users.index', compact('users'));
+        
+        $products = Product::paginate(10);
+        return view('admin.products.index', compact('products'));
     }
 
     /**
@@ -26,7 +29,10 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+        $id = Auth::id();
+
+        $shops = Shop::where('user_id', $id)->get();
+        return view('admin.products.create', compact('shops'));
     }
 
     /**
@@ -37,20 +43,7 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255', 'unique:users'],
-            'phone' => ['required'],
-            'password' => ['required'],
-        ]);
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => bcrypt($request->password),
-        ]);
-
-        return redirect()->route('admin.users.index');
+        
     }
 
     /**
@@ -61,8 +54,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        return view('admin.users.show', compact('user'));
+        //
     }
 
     /**

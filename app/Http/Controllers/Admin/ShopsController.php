@@ -72,7 +72,9 @@ class ShopsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $shop = Shop::findOrFail($id);
+        $users = User::all();
+        return view('admin.shops.edit', compact('shop', 'users'));
     }
 
     /**
@@ -84,7 +86,21 @@ class ShopsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $shop = Shop::findOrFail($id);
+        $requestData = $request->all();
+        $requestData['name_uz'] = $request->name_uz;
+        $requestData['meta_title'] = $request->meta_title;
+        $requestData['meta_description'] = $request->meta_description;
+        $requestData['meta_keyword'] = $request->meta_keyword;
+        $requestData['user_id'] = $request->user_id;
+
+        $requestData['admin'] = User::findOrFail($request->user_id)->name;
+        
+        $requestData['slug']=Str::slug($request->name_uz);
+        
+        $shop->update($requestData);
+        return redirect()->route('admin.shops.index')->with('success', 'Post updated successfully');
+
     }
 
     /**

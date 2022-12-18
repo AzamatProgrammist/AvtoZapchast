@@ -18,7 +18,8 @@ class WarehousesController extends Controller
     public function index()
     {
         $warehouses = Warehouse::paginate(10);
-        return view('admin.warehouses.index', compact('warehouses'));
+        $shops = Shop::all();
+        return view('admin.warehouses.index', compact('warehouses', 'shops'));
     }
 
     /**
@@ -69,7 +70,9 @@ class WarehousesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $warehouse = Warehouse::findOrFail($id);
+        $shops = Shop::all();
+        return view('admin.warehouses.edit', compact('warehouse', 'shops'));
     }
 
     /**
@@ -90,8 +93,9 @@ class WarehousesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Warehouse $warehouse)
     {
-        //
+        $warehouse->delete();
+        return redirect()->route('admin.warehouses.index')->with('success', 'Warehouse deleted successfully');
     }
 }

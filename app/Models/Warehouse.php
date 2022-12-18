@@ -16,6 +16,11 @@ class Warehouse extends Model
         'admin_id',
     ];
 
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
+
     
 }
 
