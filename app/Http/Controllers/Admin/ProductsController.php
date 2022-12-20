@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Shop;
+use App\Models\Type;
 
 class ProductsController extends Controller
 {
@@ -18,7 +19,7 @@ class ProductsController extends Controller
     public function index()
     {
         
-        $products = Product::paginate(10);
+        $products = Product::paginate(100);
         return view('admin.products.index', compact('products'));
     }
 
@@ -30,8 +31,8 @@ class ProductsController extends Controller
     public function create()
     {
         $id = Auth::id();
-
         $shops = Shop::where('user_id', $id)->get();
+
         return view('admin.products.create', compact('shops'));
     }
 
@@ -44,6 +45,46 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
         
+        if ($request->file('image')) {
+            
+            $file = $request->file('image');
+            $image_name = time().'.'.$file->getClientOriginalName();
+            $file->move('site/products/images/', $image_name);
+        }
+        $user_id = Shop::findOrFail($request->shop_id)->user_id;
+
+        $requestData = [
+            'name' => $request->name,
+            'Org_Dub' => $request->Org_Dub,
+            'part_number' => $request->part_number,
+            'image' => $image_name,
+            'model' => $request->model,
+            'brendi' => $request->brendi,
+            'markasi' => $request->markasi,
+            'ombor_id' => $request->ombor_id,
+            'shop_id' => $request->shop_id,
+            'user_id' => $user_id,
+        ];
+
+        $product = Product::create($requestData);
+        $requestType = [
+            'chiqqan_yili' => $request->chiqqan_yili,
+            'kelgan_yili' => $request->kelgan_yili,
+            'size' => $request->size,
+            'full_price' => $request->full_price,
+            'sotish_narxi' => $request->sotish_narxi,
+            'olingan_narxi' => $request->olingan_narxi,
+            'weight' => $request->weight,
+            'yuk_narxi' => $request->yuk_narxi,
+            'soni' => $request->soni,
+            'product_id' => $product->id,
+            'ombor_id' => $request->ombor_id,
+            'shop_id' => $request->shop_id,
+            'user_id' => $user_id,
+        ];
+
+        $type = Type::create($requestType);
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully');       
     }
 
     /**
@@ -88,6 +129,6 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Product::delete($id);
     }
 }

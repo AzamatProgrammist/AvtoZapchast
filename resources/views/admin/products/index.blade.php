@@ -12,11 +12,11 @@
             <div class="card-header">
               <h4>Products</h4>
               <div class="card-header-form">
-                <a href="{{ route('admin.products.create') }}" class="btn btn-primary">Qo'shish</a>
+                <a href="{{ route('admin.products.create') }}" class="btn btn-primary">New Product</a>
                 <div class="dropdown d-inline mr-2">
                       <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Ombor qo'shish
+                              Old Product
                             </button>
                       <div class="dropdown-menu">
                         @foreach($products as $product)
@@ -24,6 +24,7 @@
                         @endforeach
                       </div>
                     </div>
+
               </div>
             </div>
             @if(session('success'))
@@ -42,12 +43,22 @@
                   <tbody><tr>
                     <th>#</th>
                     <th>Name</th>
+                    <th>Soni</th>
                     <th>Action</th>
                   </tr>
                   @foreach($products as $product)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $product->name }}</td>
+                    <td>
+                  <div class="form-group">
+                    <select name="ombor_id" id="" class="form-control">
+                      @foreach($product->types as $type)
+                        <option value="{{ $type->id }}">{{ $type->soni }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                    </td>
                     <td>
                       
                       <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-info">Edit</a>

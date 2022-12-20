@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-12 col-md-12 col-lg-12">
-      <form method="POST" action="{{ route('admin.products.store')}}" enctype="multipart/form-data">
+      <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
         @csrf
       <div class="card">
           <div class="card-header">
@@ -52,7 +52,7 @@
           </div>
           <div class="form-group">
             <label>Chiqqan yili</label>
-            <input type="text" name="chiqqan_yili" class="form-control">
+            <input type="date" name="chiqqan_yili" class="form-control">
           </div>
           <div class="form-group">
             <label>Kelgan vaqti</label>
@@ -64,46 +64,43 @@
           </div>
           <div class="form-group">
             <label>Full price</label>
-            <input type="text" name="full_prize" class="form-control">
+            <input type="number" name="full_prize" class="form-control">
           </div>
           <div class="form-group">
             <label>Sotish narxi</label>
-            <input type="text" name="sotish_narxi" class="form-control">
+            <input type="number" name="sotish_narxi" class="form-control">
           </div>
           <div class="form-group">
             <label>Olingan narxi</label>
-            <input type="text" name="olingan_narxi" class="form-control">
+            <input type="number" name="olingan_narxi" class="form-control">
           </div>
           <div class="form-group">
             <label>weight</label>
-            <input type="text" name="weight" class="form-control">
+            <input type="number" name="weight" class="form-control">
           </div>
           <div class="form-group">
             <label>Yuk narxi</label>
-            <input type="text" name="yuk_narxi" class="form-control">
+            <input type="number" name="yuk_narxi" class="form-control">
           </div>
           <div class="form-group">
-            <label>Soni</label>
-            <input type="text" name="soni" class="form-control">
-          </div>
-          <div class="form-group">
-            <label>Dokon</label>
-            <select name="Org_Dub" id="" class="form-control">
-              <option>Select Dokon</option>
-              
-              <option value="Оригинал">dokon1</option>
-              <option value="Дубликат">dokon2</option>
-              
+            <label>Shops</label>
+            <select name="shop_id" id="" class="form-control">
+              <option>Select Shop</option>
+              @foreach($shops as $shop)
+              <option value="{{ $shop->id }}">{{ $shop->name_uz }}</option>
+              @endforeach
             </select>
           </div>
+
           <div class="form-group">
             <label>Ombor</label>
             <select name="ombor_id" id="" class="form-control">
               <option>Select Ombor</option>
-              
-              <option value="1">Ombor1</option>
-              <option value="2">Ombor2</option>
-              
+              @foreach($shops as $shop)
+                @foreach($shop->warehouses as $warehouse)
+                  <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
+                @endforeach
+              @endforeach
             </select>
           </div>
           

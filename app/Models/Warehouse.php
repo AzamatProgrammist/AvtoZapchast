@@ -21,6 +21,12 @@ class Warehouse extends Model
         return $this->belongsTo(Shop::class);
     }
 
-    
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
+
+
+
 
