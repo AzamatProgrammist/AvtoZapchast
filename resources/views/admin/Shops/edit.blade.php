@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Update shop
+    Update Do'kon
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
         @method('PUT')
       <div class="card">
           <div class="card-header">
-            <h4>Update shop</h4>
+            <h4>Do'konni o'zgartirish</h4>
           </div>
         <div class="card-body">
           <div class="form-group">

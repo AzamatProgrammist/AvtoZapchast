@@ -17,7 +17,7 @@ class WarehousesController extends Controller
      */
     public function index()
     {
-        $warehouses = Warehouse::paginate(10);
+        $warehouses = Warehouse::paginate(100);
         $shops = Shop::all();
         return view('admin.warehouses.index', compact('warehouses', 'shops'));
     }
@@ -84,7 +84,17 @@ class WarehousesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $warehouse = Warehouse::findOrFail($id);
+        $requestData = $request->all();
+        $requestData = [
+            'name' => $request->name,
+            'shop_id' => $request->shop_id,
+        ];
+        $requestData['slug']=Str::slug($request->name);
+
+        $warehouse->update($requestData);
+        return redirect()->route('admin.warehouses.index')->with('success', 'Warehouse updated successfully');
+
     }
 
     /**

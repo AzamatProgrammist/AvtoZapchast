@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    View category
+    Do'kon
 @endsection
 
 @section('content')
@@ -12,23 +12,26 @@
         @csrf
       <div class="card">
           <div class="card-header">
-            <h4>category ID {{ $category->id }}</h4>
-            <a href="{{ route('admin.categories.index')}}" class="btn btn-primary">Back</a>
+            <h4>Do'kon</h4>
+            <a href="{{ route('admin.shops.index')}}" class="btn btn-primary">Orqaga</a>
           </div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table">
               <tr>
-                <th>Name UZ</th><td>{{ $category->name_uz }}</td>
+                <th>Nomi</th><td>{{ $shop->name_uz }}</td>
               </tr>
               <tr>
-                <th>Name RU</th><td>{{ $category->name_ru }}</td>
+                <th>Admini</th><td>{{ $shop->admin }}</td>
               </tr>
               <tr>
-                <th>Slug</th><td>{{ $category->slug }}</td>
+                <th>Phone</th>
+                <td>
+                  {{ $shop->user->phone }}
+                </td>
               </tr>
               <tr>
-                <th>Created At</th><td>{{ $category->created_at }}</td>
+                <th>Qo'shilgan vaqti</th><td>{{ $shop->created_at }}</td>
               </tr>
             </table>
           </div>

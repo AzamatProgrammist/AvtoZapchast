@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    View user
+    View admin
 @endsection
 
 @section('content')
@@ -12,14 +12,14 @@
         @csrf
       <div class="card">
           <div class="card-header">
-            <h4>user ID {{ $user->id }}</h4>
-            <a href="{{ route('admin.users.index')}}" class="btn btn-primary">Back</a>
+            <h4>Admin</h4>
+            <a href="{{ route('admin.users.index')}}" class="btn btn-primary">Orqaga</a>
           </div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table">
               <tr>
-                <th>Name</th><td>{{ $user->name }}</td>
+                <th>Ismi</th><td>{{ $user->name }}</td>
               </tr>
               <tr>
                 <th>Phone</th><td>{{ $user->phone }}</td>

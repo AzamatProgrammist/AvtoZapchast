@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Users
+    Adminlar
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@
               <div class="col-12 col-md-6 col-lg-12">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Users</h4>
+                    <h4>Adminlar</h4>
                     <div class="card-header-form">
                     	<a href="{{ route('admin.users.create') }}" class="btn btn-primary">Create</a>
                     </div>
@@ -31,7 +31,7 @@
                       <table class="table table-bordered table-md">
                         <tbody><tr>
                           <th>#</th>
-                          <th>Name</th>
+                          <th>Nomi</th>
                           <th>Email</th>
                           <th>Phone</th>
                           <th>Action</th>

@@ -16,7 +16,6 @@
   <link rel="stylesheet" href="/admin/assets/css/custom.css">
   <link rel='shortcut icon' type='image/x-icon' href='/admin/assets/img/favicon.ico' />
 
-
   @yield('css')
 </head>
 
@@ -207,7 +206,6 @@
   <!-- Custom JS File -->
   <script src="/admin/assets/js/custom.js"></script>
   <!-- ijaboCropTool -->
-
 
   @yield('js')
   <script>

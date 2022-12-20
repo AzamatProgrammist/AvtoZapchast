@@ -12,23 +12,23 @@
               <a href="#" class="menu-toggle nav-link has-dropdown"><i
                   data-feather="user-check"></i><span>Adminstratsiya</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{ route('admin.users.index') }}">Users</a></li>
+                <li><a class="nav-link" href="{{ route('admin.users.index') }}">Adminlar</a></li>
                 <li><a class="nav-link" href="#">Roles</a></li>
                 <li><a class="nav-link" href="widget-data.html">Permissions</a></li>
               </ul>
             </li>
             <!-- @endrole -->
             <li class="dropdown">
-              <a href="{{ route('admin.shops.index') }}" class="nav-link"><i data-feather="monitor"></i><span>Shops</span></a>
+              <a href="{{ route('admin.shops.index') }}" class="nav-link"><i data-feather="monitor"></i><span>Magazinlar</span></a>
             </li>
             <li class="dropdown">
-              <a href="{{ route('admin.warehouses.index') }}" class="nav-link"><i data-feather="monitor"></i><span>Warehouses</span></a>
+              <a href="{{ route('admin.warehouses.index') }}" class="nav-link"><i data-feather="monitor"></i><span>Omborlar</span></a>
             </li>
             <li class="dropdown">
-              <a href="{{ route('admin.products.index')}}" class="nav-link"><i data-feather="monitor"></i><span>Products</span></a>
+              <a href="{{ route('admin.products.index')}}" class="nav-link"><i data-feather="monitor"></i><span>Tavarlar</span></a>
             </li>
             <li class="dropdown">
-              <a href="#" class="nav-link"><i data-feather="monitor"></i><span>Employees</span></a>
+              <a href="#" class="nav-link"><i data-feather="monitor"></i><span>Hodimlar</span></a>
             </li>
           </ul>
         </aside>

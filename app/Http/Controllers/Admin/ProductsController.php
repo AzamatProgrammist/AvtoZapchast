@@ -44,6 +44,8 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
+        $sotish_narxi = $request->olingan_narxi + $request->yuk_narxi;
+        $full_price = $sotish_narxi*$request->soni + $request->yuk_narxi*$request->weight;
         
         if ($request->file('image')) {
             
@@ -71,8 +73,8 @@ class ProductsController extends Controller
             'chiqqan_yili' => $request->chiqqan_yili,
             'kelgan_yili' => $request->kelgan_yili,
             'size' => $request->size,
-            'full_price' => $request->full_price,
-            'sotish_narxi' => $request->sotish_narxi,
+            'full_price' => $full_price,
+            'sotish_narxi' => $sotish_narxi,
             'olingan_narxi' => $request->olingan_narxi,
             'weight' => $request->weight,
             'yuk_narxi' => $request->yuk_narxi,

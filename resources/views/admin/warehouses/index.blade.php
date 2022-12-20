@@ -16,7 +16,7 @@
                       <div class="dropdown d-inline mr-2">
                       <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Ombor qo'shish
+                              Qo'shish
                             </button>
                       <div class="dropdown-menu">
                         @foreach($shops as $shop)
@@ -41,8 +41,8 @@
                       <table class="table table-bordered table-md">
                         <tbody><tr>
                           <th>#</th>
-                          <th>Name</th>
-                          <th>Shops</th>
+                          <th>Nomi</th>
+                          <th>Magazinlar</th>
                           <th>Action</th>
                         </tr>
                         @foreach($warehouses as $warehouse)

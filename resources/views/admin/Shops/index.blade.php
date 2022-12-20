@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Shops
+    Do'konlar
 @endsection
 
 @section('content')
@@ -10,9 +10,9 @@
       <div class="col-12 col-md-6 col-lg-12">
         <div class="card">
           <div class="card-header">
-            <h4>Shops</h4>
+            <h4>Dokonlar</h4>
             <div class="card-header-form">
-              <a href="{{ route('admin.shops.create') }}" class="btn btn-primary">Create</a>
+              <a href="{{ route('admin.shops.create') }}" class="btn btn-primary">Yaratish</a>
             </div>
             
           </div>
@@ -31,8 +31,8 @@
               <table class="table table-bordered table-md">
                 <tbody><tr>
                   <th>#</th>
-                  <th>Name</th>
-                  <th>Admin</th>
+                  <th>Nomi</th>
+                  <th>Admini</th>
                   <th>Action</th>
                 </tr>
                 @foreach($shops as $shop)

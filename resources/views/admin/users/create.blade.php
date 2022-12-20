@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Create user
+    Create admin
 @endsection
 
 @section('content')
@@ -12,11 +12,11 @@
         @csrf
       <div class="card">
           <div class="card-header">
-            <h4>Create user</h4>
+            <h4>Admin yaratish</h4>
           </div>
         <div class="card-body">
           <div class="form-group">
-            <label>Name</label>
+            <label>Ismi</label>
             <input type="text" name="name" class="form-control">
           </div>
           <div class="form-group">

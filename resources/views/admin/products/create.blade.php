@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Create product
+    yangi tavar
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
         @csrf
       <div class="card">
           <div class="card-header">
-            <h4>Create product</h4>
+            <h4>Yangi tavar qo'shish</h4>
           </div>
         <div class="card-body">
           <div class="form-group">
@@ -21,13 +21,11 @@
             @error('name')<div class="invalid-feedback">Oh no! This is invalid.</div>@enderror
           </div>
           <div class="form-group">
-            <label>Org/Dubl</label>
+            <label>Orig/Dubl</label>
             <select name="Org_Dub" id="" class="form-control">
-              <option>Select Original/Dublikat</option>
-              
+              <option>Tanlang Orig/Dubl</option>
               <option value="Оригинал">Оригинал</option>
               <option value="Дубликат">Дубликат</option>
-              
             </select>
           </div>
           <div class="form-group">
@@ -35,7 +33,7 @@
             <input type="text" name="part_number" class="form-control">
           </div>
           <div class="form-group">
-            <label>Image</label>
+            <label>Rasmi</label>
             <input type="file" name="image" class="form-control">
           </div>
           <div class="form-group">
@@ -63,24 +61,24 @@
             <input type="text" name="size" class="form-control">
           </div>
           <div class="form-group">
-            <label>Full price</label>
-            <input type="number" name="full_prize" class="form-control">
+            <label>Olingan narxi($)</label>
+            <input type="number" name="olingan_narxi" class="form-control" placeholder="dollirdaa kiriting">
           </div>
           <div class="form-group">
-            <label>Sotish narxi</label>
-            <input type="number" name="sotish_narxi" class="form-control">
+            <label>Sotilish narxi</label>
+            <input type="text" name="sotish_narxi" class="form-control">
           </div>
           <div class="form-group">
-            <label>Olingan narxi</label>
-            <input type="number" name="olingan_narxi" class="form-control">
+            <label>Umumiy og'irligi</label>
+            <input type="number" name="weight" class="form-control" placeholder="umumiy og'irligi">
           </div>
           <div class="form-group">
-            <label>weight</label>
-            <input type="number" name="weight" class="form-control">
+            <label>Yuk narxi($)</label>
+            <input type="number" name="yuk_narxi" class="form-control" placeholder="1 kg yuk narxi dollirdaa">
           </div>
           <div class="form-group">
-            <label>Yuk narxi</label>
-            <input type="number" name="yuk_narxi" class="form-control">
+            <label>Soni</label>
+            <input type="text" name="soni" class="form-control">
           </div>
           <div class="form-group">
             <label>Shops</label>
@@ -91,7 +89,6 @@
               @endforeach
             </select>
           </div>
-
           <div class="form-group">
             <label>Ombor</label>
             <select name="ombor_id" id="" class="form-control">
@@ -102,11 +99,6 @@
                 @endforeach
               @endforeach
             </select>
-          </div>
-          
-          <div class="form-group">
-            <label>Soni</label>
-            <input type="text" name="soni" class="form-control">
           </div>
           <div class="card-footer text-right">
             <button class="btn btn-primary mr-1" type="submit">Save</button>

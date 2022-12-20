@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Create shop
+    Magazin yaratish
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
         @csrf
       <div class="card">
           <div class="card-header">
-            <h4>Create shop</h4>
+            <h4>Magazin yaratish</h4>
           </div>
         <div class="card-body">
           <div class="form-group">

@@ -17,7 +17,7 @@ class ShopsController extends Controller
      */
     public function index()
     {
-        $shops = Shop::paginate(10);
+        $shops = Shop::paginate(100);
         return view('admin.shops.index', ['shops'=>$shops]);
     }
 
@@ -61,7 +61,8 @@ class ShopsController extends Controller
      */
     public function show($id)
     {
-        //
+        $shop = Shop::findOrFail($id);
+        return view('admin.shops.show', compact('shop'));
     }
 
     /**

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Products
+    Tavarlar
 @endsection
 
 @section('content')
@@ -12,11 +12,11 @@
             <div class="card-header">
               <h4>Products</h4>
               <div class="card-header-form">
-                <a href="{{ route('admin.products.create') }}" class="btn btn-primary">New Product</a>
+                <a href="{{ route('admin.products.create') }}" class="btn btn-primary">Qo'shish</a>
                 <div class="dropdown d-inline mr-2">
                       <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Old Product
+                              Eski tavar qo'shish
                             </button>
                       <div class="dropdown-menu">
                         @foreach($products as $product)
@@ -42,27 +42,35 @@
                 <table class="table table-bordered table-md">
                   <tbody><tr>
                     <th>#</th>
+                    <th>Image</th>
                     <th>Name</th>
-                    <th>Soni</th>
+                    <th>Markasi</th>
+                    <th>Count</th>
+                    <th>Price</th>
                     <th>Action</th>
                   </tr>
                   @foreach($products as $product)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $product->name }}</td>
                     <td>
-                  <div class="form-group">
-                    <select name="ombor_id" id="" class="form-control">
+                      <img width="50" src="/site/products/images/{{$product->image}}">
+                    </td>
+                    <td>{{ $product->name }}</td>
+                    <td>{{ $product->markasi }}</td>
+                    <td>
                       @foreach($product->types as $type)
-                        <option value="{{ $type->id }}">{{ $type->soni }}</option>
+                       {{ $type->soni }}
                       @endforeach
-                    </select>
-                  </div>
+                    </td>
+                    <td>
+                      @foreach($product->types as $type)
+                       {{ $type->sotish_narxi }} $
+                      @endforeach
                     </td>
                     <td>
                       
-                      <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-info">Edit</a>
-                      <a href="{{ route('admin.products.show', $product->id) }}" class="btn btn-primary">View</a>
+                      <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-info">O'zgartirish</a>
+                      <a href="{{ route('admin.products.show', $product->id) }}" class="btn btn-primary">Ko'rish</a>
                       <form style="display: inline;" method="POST" action="{{ route('admin.products.destroy', $product->id)}}">
                         @csrf
                         @method('DELETE')
