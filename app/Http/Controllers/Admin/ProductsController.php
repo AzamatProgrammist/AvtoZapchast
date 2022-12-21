@@ -44,8 +44,7 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $sotish_narxi = $request->olingan_narxi + $request->yuk_narxi;
-        $full_price = $sotish_narxi*$request->soni + $request->yuk_narxi*$request->weight;
+        $full_price = $request->olingan_narxi*$request->soni + $request->yuk_narxi*$request->weight;
         
         if ($request->file('image')) {
             
@@ -74,7 +73,7 @@ class ProductsController extends Controller
             'kelgan_yili' => $request->kelgan_yili,
             'size' => $request->size,
             'full_price' => $full_price,
-            'sotish_narxi' => $sotish_narxi,
+            'sotish_narxi' => $request->sotish_narxi,
             'olingan_narxi' => $request->olingan_narxi,
             'weight' => $request->weight,
             'yuk_narxi' => $request->yuk_narxi,
@@ -97,7 +96,8 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return view('admin.products.show', compact('product'));
     }
 
     /**
@@ -108,7 +108,8 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return view('admin.products.edit', compact('product'));
     }
 
     /**
@@ -120,7 +121,51 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        $full_price = $request->olingan_narxi*$request->soni + $request->yuk_narxi*$request->weight;
+        $old_image = $product->image;
+        if ($request->file('image')) {
+            
+            $file = $request->file('image');
+            $image_name = time().'.'.$file->getClientOriginalName();
+            $file->move('site/products/images/', $image_name);
+            unlink('site/products/images/'.$old_image);
+        }
+        $user_id = Shop::findOrFail($request->shop_id)->user_id;
+
+        $requestData = [
+            'name' => $request->name,
+            'Org_Dub' => $request->Org_Dub,
+            'part_number' => $request->part_number,
+            'image' => $image_name,
+            'model' => $request->model,
+            'brendi' => $request->brendi,
+            'markasi' => $request->markasi,
+            'ombor_id' => $request->ombor_id,
+            'shop_id' => $request->shop_id,
+            'user_id' => $user_id,
+        ];
+
+        $product = Product::create($requestData);
+        $requestType = [
+            'chiqqan_yili' => $request->chiqqan_yili,
+            'kelgan_yili' => $request->kelgan_yili,
+            'size' => $request->size,
+            'full_price' => $full_price,
+            'sotish_narxi' => $request->sotish_narxi,
+            'olingan_narxi' => $request->olingan_narxi,
+            'weight' => $request->weight,
+            'yuk_narxi' => $request->yuk_narxi,
+            'soni' => $request->soni,
+            'product_id' => $product->id,
+            'ombor_id' => $request->ombor_id,
+            'shop_id' => $request->shop_id,
+            'user_id' => $user_id,
+        ];
+
+        $type = Type::create($requestType);
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully');
     }
 
     /**

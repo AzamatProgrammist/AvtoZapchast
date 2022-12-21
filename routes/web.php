@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ShopsController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\WarehousesController;
 use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\Admin\OrdersController;
 
 
 /*
@@ -34,5 +35,7 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function(){
     Route::resource('users', UsersController::class);
     Route::resource('warehouses', WarehousesController::class);
     Route::resource('products', ProductsController::class);
+    Route::resource('orders', OrdersController::class);
 
 });
+

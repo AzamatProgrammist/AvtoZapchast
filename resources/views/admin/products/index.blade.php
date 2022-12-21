@@ -13,18 +13,6 @@
               <h4>Products</h4>
               <div class="card-header-form">
                 <a href="{{ route('admin.products.create') }}" class="btn btn-primary">Qo'shish</a>
-                <div class="dropdown d-inline mr-2">
-                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Eski tavar qo'shish
-                            </button>
-                      <div class="dropdown-menu">
-                        @foreach($products as $product)
-                        <a class="dropdown-item" href="{{ route('admin.products.create', $product->id) }}">{{ $product->name }}</a>
-                        @endforeach
-                      </div>
-                    </div>
-
               </div>
             </div>
             @if(session('success'))
@@ -42,29 +30,84 @@
                 <table class="table table-bordered table-md">
                   <tbody><tr>
                     <th>#</th>
-                    <th>Image</th>
-                    <th>Name</th>
+                    <th>Rasmi</th>
+                    <th>Nomi</th>
                     <th>Markasi</th>
-                    <th>Count</th>
-                    <th>Price</th>
+                    <th>Brendi</th>
+                    <th>Modeli</th>
+                    <th>Dubl/Org</th>
+                    <th>Part no'mer</th>
+                    <th>Soni</th>
+                    <th>Narxi</th>
+                    <th>Olingan narx</th>
+                    <th>yuk narxi</th>
+                    <th>Kg</th>
+                    <th>To'liq narx</th>
+                    <th>chiqqan yili</th>
+                    <th>kelgan vaqti</th>
+                    <th>O'lchami</th>
                     <th>Action</th>
                   </tr>
                   @foreach($products as $product)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>
-                      <img width="50" src="/site/products/images/{{$product->image}}">
+                      <img width="40" src="/site/products/images/{{$product->image}}">
                     </td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->markasi }}</td>
+                    <td>{{ $product->brendi }}</td>
+                    <td>{{ $product->model }}</td>
+                    <td>{{ $product->Org_Dub }}</td>
+
+                    <td>{{ $product->part_number }}</td>
                     <td>
                       @foreach($product->types as $type)
                        {{ $type->soni }}
                       @endforeach
                     </td>
+                    
                     <td>
                       @foreach($product->types as $type)
                        {{ $type->sotish_narxi }} $
+                      @endforeach
+                    </td>
+                    
+                    <td>
+                      @foreach($product->types as $type)
+                       {{ $type->olingan_narxi }} $
+                      @endforeach
+                    </td>
+                    
+                    <td>
+                      @foreach($product->types as $type)
+                       {{ $type->yuk_narxi }} $
+                      @endforeach
+                    </td>
+                    <td>
+                      @foreach($product->types as $type)
+                       {{ $type->weight }}
+                      @endforeach
+                    </td>
+                    <td>
+                      @foreach($product->types as $type)
+                       {{ $type->full_price }} $
+                      @endforeach
+                    </td>
+                    <td>
+                      @foreach($product->types as $type)
+                       {{ $type->chiqqan_yili }}
+                      @endforeach
+                    </td>
+                    <td>
+                      @foreach($product->types as $type)
+                       {{ $type->kelgan_yili }}
+                      @endforeach
+                    </td>
+
+                    <td>
+                      @foreach($product->types as $type)
+                       {{ $type->size }}
                       @endforeach
                     </td>
                     <td>

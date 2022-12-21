@@ -59,7 +59,8 @@ class WarehousesController extends Controller
      */
     public function show($id)
     {
-        //
+        $warehouse = Warehouse::findOrFail($id);
+        return view('admin.warehouses.show', compact('warehouse'));
     }
 
     /**

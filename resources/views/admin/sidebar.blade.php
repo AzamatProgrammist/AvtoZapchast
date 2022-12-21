@@ -28,6 +28,9 @@
               <a href="{{ route('admin.products.index')}}" class="nav-link"><i data-feather="monitor"></i><span>Tavarlar</span></a>
             </li>
             <li class="dropdown">
+              <a href="{{ route('admin.orders.index')}}" class="nav-link"><i data-feather="monitor"></i><span>Zakazlar</span></a>
+            </li>
+            <li class="dropdown">
               <a href="#" class="nav-link"><i data-feather="monitor"></i><span>Hodimlar</span></a>
             </li>
           </ul>
