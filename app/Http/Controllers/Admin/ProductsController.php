@@ -18,9 +18,9 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        
+        $status = 'badge-success';
         $products = Product::paginate(100);
-        return view('admin.products.index', compact('products'));
+        return view('admin.products.index', compact('products', 'status'));
     }
 
     /**
@@ -62,13 +62,6 @@ class ProductsController extends Controller
             'model' => $request->model,
             'brendi' => $request->brendi,
             'markasi' => $request->markasi,
-            'ombor_id' => $request->ombor_id,
-            'shop_id' => $request->shop_id,
-            'user_id' => $user_id,
-        ];
-
-        $product = Product::create($requestData);
-        $requestType = [
             'chiqqan_yili' => $request->chiqqan_yili,
             'kelgan_yili' => $request->kelgan_yili,
             'size' => $request->size,
@@ -78,13 +71,12 @@ class ProductsController extends Controller
             'weight' => $request->weight,
             'yuk_narxi' => $request->yuk_narxi,
             'soni' => $request->soni,
-            'product_id' => $product->id,
             'ombor_id' => $request->ombor_id,
             'shop_id' => $request->shop_id,
             'user_id' => $user_id,
         ];
 
-        $type = Type::create($requestType);
+        $product = Product::create($requestData);
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully');       
     }
 
@@ -124,13 +116,20 @@ class ProductsController extends Controller
         $product = Product::findOrFail($id);
 
         $full_price = $request->olingan_narxi*$request->soni + $request->yuk_narxi*$request->weight;
-        $old_image = $product->image;
+        $oldimage = $request->oldimage;
+        $image_name = $oldimage;
         if ($request->file('image')) {
-            
             $file = $request->file('image');
             $image_name = time().'.'.$file->getClientOriginalName();
             $file->move('site/products/images/', $image_name);
-            unlink('site/products/images/'.$old_image);
+            if ($oldimage) {
+                if(file_exists('site/products/images/'.$oldimage))
+                {
+                    $rr = file_exists('site/products/images/'.$oldimage);
+                    dd($rr);
+                    unlink('site/products/images/'.$oldimage);
+                }
+            }
         }
         $user_id = Shop::findOrFail($request->shop_id)->user_id;
 
@@ -142,13 +141,6 @@ class ProductsController extends Controller
             'model' => $request->model,
             'brendi' => $request->brendi,
             'markasi' => $request->markasi,
-            'ombor_id' => $request->ombor_id,
-            'shop_id' => $request->shop_id,
-            'user_id' => $user_id,
-        ];
-
-        $product = Product::create($requestData);
-        $requestType = [
             'chiqqan_yili' => $request->chiqqan_yili,
             'kelgan_yili' => $request->kelgan_yili,
             'size' => $request->size,
@@ -158,14 +150,13 @@ class ProductsController extends Controller
             'weight' => $request->weight,
             'yuk_narxi' => $request->yuk_narxi,
             'soni' => $request->soni,
-            'product_id' => $product->id,
             'ombor_id' => $request->ombor_id,
             'shop_id' => $request->shop_id,
             'user_id' => $user_id,
         ];
 
-        $type = Type::create($requestType);
-        return redirect()->route('admin.products.index')->with('success', 'Product created successfully');
+        $product->update($requestData);
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully');
     }
 
     /**
@@ -176,6 +167,15 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        Product::delete($id);
+        $oldimage = Product::findOrFail($id);
+
+        if(file_exists('site/products/images/'.$oldimage->image)){
+        
+            unlink('site/products/images/'.$oldimage->image);
+        
+        }
+        $oldimage->delete();
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully');
+
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Shop;
 use App\Models\User;
 use Str;
+use App\Models\Warehouse;
 
 class ShopsController extends Controller
 {
@@ -110,9 +111,16 @@ class ShopsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Shop $shop)
+    public function destroy($id)
     {
+        $shop = Shop::find($id);
+        $warehouses = Warehouse::where('shop_id', $id)->get()->count();
+        
+        if ($warehouses ==! 0) {
+        return redirect()->route('admin.shops.index')->with('success', 'Avval omborlarini delete qiling');
+            
+        }
         $shop->delete();
-        return redirect()->route('admin.shops.index')->with('success', 'Category deleted successfully');
+        return redirect()->route('admin.shops.index')->with('success', 'Shop deleted successfully');
     }
 }

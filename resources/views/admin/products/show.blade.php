@@ -57,71 +57,53 @@
               <tr>
                 <th>Soni</th>
                 <td>
-                  @foreach($product->types as $type)
-                  {{ $type->soni }}
-                  @endforeach
+                  {{ $product->soni }}
                 </td>
               </tr>
               <tr>
                 <th>Narxi</th>
                 <td>
-                  @foreach($product->types as $type)
-                  {{ $type->olingan_narxi }}
-                  @endforeach
+                  {{ $product->olingan_narxi }}
                 </td>
               </tr>
               <tr>
                 <th>Olingan narx</th>
                 <td>
-                  @foreach($product->types as $type)
-                  {{ $type->weight }}
-                  @endforeach
+                  {{ $product->weight }}
                 </td>
               </tr>
               <tr>
                 <th>yuk narxi</th>
-                @foreach($product->types as $type)
-                  {{ $type->yuk_narxi }}
-                  @endforeach
+                  {{ $product->yuk_narxi }}
               </tr>
               <tr>
                 <th>Kg</th>
                 <td>
-                  @foreach($product->types as $type)
-                  {{ $type->weight }}
-                  @endforeach
+                  {{ $product->weight }}
                 </td>
               </tr>
               <tr>
                 <th>To'liq narx</th>
                 <<td>
-                  @foreach($product->types as $type)
-                  {{ $type->full_price }}
-                  @endforeach
+                  {{ $product->full_price }}
                 </td>
               </tr>
               <tr>
                 <th>chiqqan yili</th>
                 <td>
-                  @foreach($product->types as $type)
-                  {{ $type->chiqqan_yili }}
-                  @endforeach
+                  {{ $product->chiqqan_yili }}
                 </td>
               </tr>
               <tr>
                 <th>kelgan vaqti</th>
                 <td>
-                  @foreach($product->types as $type)
-                  {{ $type->kelgan_yili }}
-                  @endforeach
+                  {{ $product->kelgan_yili }}
                 </td>
               </tr>
               <tr>
                 <th>O'lchami</th>
                 <td>
-                  @foreach($product->types as $type)
-                  {{ $type->size }}
-                  @endforeach
+                  {{ $product->size }}
                 </td>
               </tr>
 

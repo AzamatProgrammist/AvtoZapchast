@@ -10,7 +10,7 @@
         <div class="col-12 col-md-6 col-lg-12">
           <div class="card">
             <div class="card-header">
-              <h4>Products</h4>
+              <h4>Tavarlar</h4>
               <div class="card-header-form">
                 <a href="{{ route('admin.products.create') }}" class="btn btn-primary">Qo'shish</a>
               </div>
@@ -49,7 +49,9 @@
                     <th>Action</th>
                   </tr>
                   @foreach($products as $product)
+                 
                   <tr>
+                    
                     <td>{{ $loop->iteration }}</td>
                     <td>
                       <img width="40" src="/site/products/images/{{$product->image}}">
@@ -59,65 +61,30 @@
                     <td>{{ $product->brendi }}</td>
                     <td>{{ $product->model }}</td>
                     <td>{{ $product->Org_Dub }}</td>
-
                     <td>{{ $product->part_number }}</td>
-                    <td>
-                      @foreach($product->types as $type)
-                       {{ $type->soni }}
-                      @endforeach
-                    </td>
+                    <td class="badge @if($product->soni<=25)
+                      {{$status = 'badge-danger'}}
+                    @elseif($product->soni>25 && $product->soni<=75)
+                      {{$status = 'badge-warning'}}
+                    @elseif($product->soni>75)
+                      {{$status = 'badge-success'}}
+                    @endif">{{ $product->soni }}</td>
+                    <td>{{ $product->sotish_narxi }} $</td>
+                    <td>{{ $product->olingan_narxi }} $</td>
+                    <td>{{ $product->yuk_narxi }} $</td>
+                    <td>{{ $product->weight }}</td>
+                    <td>{{ $product->full_price }} $</td>
+                    <td>{{ $product->chiqqan_yili }} </td>
+                    <td>{{ $product->kelgan_yili }}</td>
+                    <td>{{ $product->size }}</td>
                     
                     <td>
-                      @foreach($product->types as $type)
-                       {{ $type->sotish_narxi }} $
-                      @endforeach
-                    </td>
-                    
-                    <td>
-                      @foreach($product->types as $type)
-                       {{ $type->olingan_narxi }} $
-                      @endforeach
-                    </td>
-                    
-                    <td>
-                      @foreach($product->types as $type)
-                       {{ $type->yuk_narxi }} $
-                      @endforeach
-                    </td>
-                    <td>
-                      @foreach($product->types as $type)
-                       {{ $type->weight }}
-                      @endforeach
-                    </td>
-                    <td>
-                      @foreach($product->types as $type)
-                       {{ $type->full_price }} $
-                      @endforeach
-                    </td>
-                    <td>
-                      @foreach($product->types as $type)
-                       {{ $type->chiqqan_yili }}
-                      @endforeach
-                    </td>
-                    <td>
-                      @foreach($product->types as $type)
-                       {{ $type->kelgan_yili }}
-                      @endforeach
-                    </td>
-
-                    <td>
-                      @foreach($product->types as $type)
-                       {{ $type->size }}
-                      @endforeach
-                    </td>
-                    <td>
-                      
                       <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-info">O'zgartirish</a>
                       <a href="{{ route('admin.products.show', $product->id) }}" class="btn btn-primary">Ko'rish</a>
                       <form style="display: inline;" method="POST" action="{{ route('admin.products.destroy', $product->id)}}">
                         @csrf
                         @method('DELETE')
-                        <input class="btn btn-danger" onclick="return confirm('Confirm {{$product->name_uz}} delete')" type="submit" value="Delete">
+                        <input class="btn btn-danger" onclick="return confirm('Confirm {{$product->name}} delete')" type="submit" value="Delete">
                       </form>
                     </td>
                   </tr>
@@ -135,6 +102,7 @@
           </div>
         </div>      
     </div>
+
 
 
     <div class="settingSidebar">
