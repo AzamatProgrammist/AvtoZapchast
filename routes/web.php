@@ -6,7 +6,9 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\WarehousesController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\OrdersController;
+use App\Http\Controllers\Admin\CartsController;
 
+use App\Http\Livewire\ShowPosts;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +31,7 @@ Route::get('/admin/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
+
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function(){
     
     Route::resource('shops', ShopsController::class);
@@ -36,6 +39,6 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function(){
     Route::resource('warehouses', WarehousesController::class);
     Route::resource('products', ProductsController::class);
     Route::resource('orders', OrdersController::class);
+    Route::resource('carts', CartsController::class);
 
 });
-

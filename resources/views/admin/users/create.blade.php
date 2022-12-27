@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-12 col-md-12 col-lg-12">
-      <form method="POST" action="{{ route('admin.users.store')}}">
+      <form method="POST" action="{{ route('admin.users.store') }}">
         @csrf
       <div class="card">
           <div class="card-header">
