@@ -54,7 +54,6 @@ class ProductService
 	{
         
         if ($request->file('image')) {
-            
             $file = $request->file('image');
             $image_name = time().'.'.$file->getClientOriginalName();
             $file->move('site/products/images/', $image_name);

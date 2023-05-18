@@ -19,6 +19,10 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+<meta name="csrf-token" content="content">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <title>@yield('title') - Admin panel</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="/admin/assets/css/app.min.css">
@@ -45,7 +49,6 @@
 
   @yield('css')
 </head>
-
 <body>
   <div class="loader"></div>
   <div id="app">
@@ -72,7 +75,7 @@
           </ul>
         </div>
         
-<ul class="navbar-nav navbar-right">
+      <ul class="navbar-nav navbar-right">
           <li class="dropdown dropdown-list-toggle">
             <a href="/lang/uz" class="nav-link" style="color: black;">UZB</a>
           </li>
@@ -85,8 +88,11 @@
           <li class="dropdown dropdown-list-toggle"><a href="{{ route('admin.carts.index') }}" data-toggle="dropdown"
               class="nav-link nav-link-lg message-toggle">
               <i class="ion-android-cart" data-pack="android" data-tags="" style="color: black; font-size: 25px"></i>
+              
               <span class="badge headerBadge1">
-                {{$count}} </span> </a>
+                {{ $count }} 
+              </span> </a>
+
             <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
               @if($count1 > 0)
                 <a href="{{ route('admin.carts.index') }}" class="dropdown-item"> <span class="dropdown-item-avatar
@@ -235,6 +241,26 @@
   </script>
 </body>
 
+
+<script>
+  $(document).ready(function () {
+    $('#saveData').on('click', function () {
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      $.ajax({
+        url: "{{ route('admin.carts.store') }}",
+        type: 'POST',
+        data: $('#createForm').serialize(),
+        success: function (response) {
+          console.log(response, 'response')
+        },
+      });
+    });
+  });
+</script>
 
 <!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
