@@ -60,9 +60,14 @@ class CartsController extends Controller
     public function store(Request $request)
     {
         $this->cartService->store($request);
-        return back();
+        return redirect()->route('admin.carts.create')->with('success', 'Buyurtma yangilandi');
+
     }
 
+    public function insert(Request $request)
+    {
+        return redirect()->route('admin.carts.create')->with('success', 'Buyurtma yangilandi');
+    }
     /**
      * Display the specified resource.
      *

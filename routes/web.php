@@ -41,7 +41,7 @@ Route::get('/lang/{lang}', function($lang){
 });
 
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function(){
-    
+
     Route::resource('shops', ShopsController::class);
     Route::get('/shops/order/{id}', [ShopsController::class, 'status'])->name('shops.status');
     Route::get('/shops/inkassa/{id}', [ShopsController::class, 'inkassa'])->name('shops.inkassa');
@@ -54,6 +54,7 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function(){
     Route::resource('products', ProductsController::class);
     Route::resource('orders', OrdersController::class);
     Route::resource('carts', CartsController::class);
+    Route::post('/cartStore', [CartsController::class, 'insert'])->name('cartStore');
     Route::resource('main_orders', MainOrderController::class);
     Route::resource('employees', EmployeesController::class);
     Route::resource('orders_to_foreigners', OrdersToForeigners::class);

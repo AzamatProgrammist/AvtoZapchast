@@ -40,18 +40,18 @@
                     <th>Model</th>
                     <th>O'lchami</th>
                     <th>Soni</th>
-                    
+
                     <th>Action</th>
                   </tr>
                 </thead>
                   <tbody>
 
                   @foreach($products as $product)
-                 
+
                   <tr>
-                    
+
                     <td>{{ $loop->iteration }}</td>
-                    
+
                     <td>{{ $product->Org_Dub }}</td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->markasi }}</td>
@@ -70,13 +70,14 @@
                     @endif">{{ $product->soni }}</td>
                     <td>
                       @can('create cart')
-                      <form action="{{ route('admin.carts.store') }}" method="POST">
+                      <form action="javascript:void(0)" id="createForm">
                         @csrf
                         <input type="hidden" name="name" id="name" value="{{ $product->name }}">
                         <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
                         <input type="hidden" name="shop_id" id="shop_id" value="{{ $product->shop_id }}">
                         <input type="number" name="quantity" id="quantity" value="1" style="width: 70px;" min="1" required>
-                        <button id="submit" type="submit" class="btn btn-info fas fa-save"></button>
+                        <div id="error_msg"></div>
+                        <button id="saveData" name="saveData" type="submit" class="btn btn-info fas fa-save">Save</button>
                       </form>
                       @endcan
                     </td>
@@ -85,9 +86,9 @@
                 </tbody></table>
               </div>
               </div>
-        
+
           </div>
-        </div>      
+        </div>
     </div>
 
 

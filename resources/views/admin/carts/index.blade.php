@@ -52,7 +52,7 @@
               <form action="{{ route('admin.carts.update', $cart->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <td>{{ $loop->iteration}}</td>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $cart->name }}</td>
                 <td><input type="text" name="quantity[]" value="{{ $cart->quantity }}"></td>
                 <td>{{ $cart->price }} $</td>
