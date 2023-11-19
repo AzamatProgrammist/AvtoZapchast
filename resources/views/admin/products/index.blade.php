@@ -37,7 +37,7 @@
                         >
                   <thead>
                     <tr>
-                      <th>#</th>
+                      <!-- <th>#</th> -->
                       <th>Dubl/Org</th>
                       <th>Nomi</th>
                       <th>Model/Marka/Yili</th>
@@ -76,7 +76,7 @@
                   @if($sort == $product->analog)
                   <tr>
                     
-                    <td>{{ $loop->iteration }}</td>
+                    <!-- <td>{{ $loop->iteration }}</td> -->
                     <td>{{ $product->Org_Dub }}</td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->model }}/{{ $product->markasi }}/{{ $product->chiqqan_yili }}</td>
@@ -114,7 +114,7 @@
                                   @endforeach
 
                                   @if($num > 0)
-                                      <a class="dropdown-item" href="#">{{ $shop->name_uz }} {{ $num }}</a>
+                                      <a class="dropdown-item" href="#">{{ $shop->name_uz }} {{ $num }} ta</a>
                                   @endif
                                   
                                 @endif
@@ -124,11 +124,12 @@
                                 @if($shop->user)
                                 @if($shop->user->usertype == 1)
                                     @if($shop->id == $product->shop_id)
-                                      <a class="dropdown-item" href="#">{{ $shop->name_uz }} {{ $product->soni - $inkassaSub_num }}</a>
+                                      <a class="dropdown-item" href="#">{{ $shop->name_uz }} {{ $product->soni - $inkassaSub_num }} ta</a>
                                     @endif
                                   @endif
                                 @endif
                               @endforeach
+                                      <a class="dropdown-item" href="#">skladda {{ $product->soni - $inkassaSub_num }} ta</a>
                             </div>
                     </section>
 
