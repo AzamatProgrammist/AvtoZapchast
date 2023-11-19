@@ -19,7 +19,7 @@
           <div class="form-group">
             <label>Name</label>
             <input type="text" value="{{ $shop->name_uz}}" name="name_uz" class="form-control @error('name_uz') is-invalid @enderror">
-            @error('name_uz')<div class="invalid-feedback">Oh no! this is invalid.</div>@enderror
+            @error('name_uz')<span style="color: red;">{{ $message }} </span>@enderror
           </div>
           
            <div class="form-group">
@@ -29,9 +29,9 @@
               @foreach($users as $user)
               <option {{ $shop->user_id==$user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
               @endforeach
+              @error('admin') <span style="color: red;">{{ $message }} </span> @enderror
             </select>
           </div>
-
           <div class="form-group">
             <label>meta title</label>
             <input type="text" value="{{ $shop->meta_title}}" name="meta_title" class="form-control">

@@ -17,15 +17,14 @@
         <div class="card-body">
           <div class="form-group">
             <label>Ombor nomi</label>
-            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror">
-            @error('name')<div class="invalid-feedback">Oh no! This is invalid.</div>@enderror
+            <input type="text" name="name" class="form-control">
+            @error('name') <span style="color: red;">{{ $message }} </span> @enderror
           </div>
           <div class="form-group">
             <label>Shop</label>
             <select name="shop_id" id="" class="form-control">
-              <option>Select Shop</option>
               @foreach($shops as $shop)
-              <option value="{{ $shop->id }}">{{ $shop->name_uz }}</option>
+                <option value="{{ $shop->id }}">{{ $shop->name_uz }}</option>
               @endforeach
             </select>
           </div>
@@ -35,6 +34,6 @@
         </div>
       </div>
     </form>
-    </div>
+  </div>
 
 @endsection

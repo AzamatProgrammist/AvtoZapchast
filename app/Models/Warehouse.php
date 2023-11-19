@@ -25,6 +25,12 @@ class Warehouse extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function inkassas()
+    {
+        return $this->hasMany(Inkassa::class);
+    }
+
 }
 
 

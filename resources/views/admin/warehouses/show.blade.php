@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Ombor
+    @lang('words.warehouses')
 @endsection
 
 @section('content')

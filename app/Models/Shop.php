@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Shop extends Model
 {
     use HasFactory;
-    protected $fillable = ['name_uz', 'slug', 'admin', 'user_id', 'meta_title', 'meta_description', 'meta_keywords'];
+    protected $fillable = ['name_uz', 'slug', 'admin', 'status', 'usertype', 'user_id', 'meta_title', 'meta_description', 'meta_keywords'];
 
 
     public function warehouses(){
@@ -19,4 +19,13 @@ class Shop extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
+
+    public function inkassas(){
+        return $this->hasMany(Inkassa::class);
+    }
 }
+

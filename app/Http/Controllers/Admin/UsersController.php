@@ -5,9 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\Shop;
+use Spatie\Permission\Models\Role;
+
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:create admin', ['only' => ['create', 'store']]);
+        $this->middleware('permission:create admin', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:create admin', ['only' => 'destroy']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -26,31 +37,35 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+        $roles = Role::all();
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreUserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255', 'unique:users'],
-            'phone' => ['required'],
-            'password' => ['required'],
-        ]);
+        $request->validated();
+        if (in_array(1, $request->roles)) {
+            $usertype = 1;
+        }elseif (in_array(2, $request->roles)) {
+            $usertype = 2;
+        }else{
+            $usertype = 0;
+        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'usertype' => $usertype,
             'password' => bcrypt($request->password),
         ]);
-
-        return redirect()->route('admin.users.index');
+        $user->assignRole($request->roles);
+        return redirect()->route('admin.users.index')->with('success', 'User created Successfully');
     }
 
     /**
@@ -74,7 +89,9 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return view('admin.users.edit', compact('user'));
+        $roles = Role::all();
+        $userRoles = $user->roles()->pluck('id')->toArray();
+        return view('admin.users.edit', compact('user', 'roles', 'userRoles'));
     }
 
     /**
@@ -84,9 +101,31 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $request->validated([
+            'email' => 'required|email|unique:users,email'.$user->id,
+        ]);
+        if (in_array(1, $request->roles)) {
+            $usertype = 1;
+        }elseif (in_array(2, $request->roles)) {
+            $usertype = 2;
+        }else{
+            $usertype = 0;
+        }
+        $user->name = $request->name;
+        $user->usertype = $usertype;
+        $user->phone = $request->phone;
+        $user->email = $request->email;
+        if (isset($request->password)) {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        $user->syncRoles($request->roles);
+
+        return redirect()->route('admin.users.index')->with('success', 'User updated Successfully');
     }
 
     /**
@@ -97,8 +136,14 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        $shops = Shop::where('user_id', $id)->count();
         $user = User::findOrFail($id);
-        $user->delete();
-        return redirect()->route('admin.users.index')->with('success', "foydalanuvchi bazadan o'chirildi");
+        if ($shops > 0) {
+            
+            return redirect()->route('admin.users.index')->with('success', "foydalanuvchini bazada magazini mavjud");
+        }else{
+            $user->delete();
+            return redirect()->route('admin.users.index')->with('success', "foydalanuvchi bazadan o'chirildi");
+        }
     }
 }

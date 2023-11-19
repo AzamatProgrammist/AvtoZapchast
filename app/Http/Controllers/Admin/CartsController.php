@@ -4,12 +4,28 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Product;
 use App\Models\Cart;
-use App\Models\Shop;
+use App\Services\CartService;
+use App\Repositories\Interfaces\CartRepositoryInterface;
+use App\Repositories\Interfaces\ShopRepositoryInterface;
+use App\Repositories\Interfaces\ProductRepositoryInterface;
 
 class CartsController extends Controller
 {
+    public $cartService;
+    public $cartRepository;
+    public $shopRepository;
+    public $productRepository;
+    public function __construct(CartService $cartService, CartRepositoryInterface $cartRepository, ShopRepositoryInterface $shopRepository, ProductRepositoryInterface $productRepository)
+    {
+        $this->cartService = $cartService;
+        $this->cartRepository = $cartRepository;
+        $this->shopRepository = $shopRepository;
+        $this->productRepository = $productRepository;
+        $this->middleware('permission:create cart', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit cart', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete cart', ['only' => 'delete']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,8 +35,8 @@ class CartsController extends Controller
 
     public function index()
     {
-        $carts = Cart::all();
-        $shops = Shop::all();
+        $carts = $this->cartRepository->getAll();
+        $shops = $this->shopRepository->getAll();
         return view('admin.carts.index', compact('carts', 'shops'));
     }
 
@@ -31,7 +47,7 @@ class CartsController extends Controller
      */
     public function create()
     {
-        $products = Product::all();
+        $products = $this->productRepository->getAllProduct();
         return view('admin.carts.create', compact('products'));
     }
 
@@ -43,27 +59,22 @@ class CartsController extends Controller
      */
     public function store(Request $request)
     {
-        $product = Product::find($request->product_id);
-        $cart = new Cart;
-        $cart->name = $product->name;
-        $cart->price = $product->sotish_narxi;
-        $cart->image_name = $product->image;
-        $cart->shop_id = $product->shop_id;
-        $cart->model = $product->model;
-        $cart->Org_Dub = $product->Org_Dub;
-        $cart->quantity = $request->quantity;
+        $this->cartService->store($request);
+        return redirect()->route('admin.carts.create')->with('success', 'Buyurtma yangilandi');
 
-        $cart->save();
-        return back();
     }
 
+    public function insert(Request $request)
+    {
+        return redirect()->route('admin.carts.create')->with('success', 'Buyurtma yangilandi');
+    }
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Cart $cart)
     {
         //
     }
@@ -74,7 +85,7 @@ class CartsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Cart $cart)
     {
         //
     }
@@ -86,14 +97,9 @@ class CartsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Cart $cart)
     {
-        dd($request->quantity);
-        $cart = Cart::findOrFail($id);
-
-        $cart->quantity = $request->quantity;
-
-        $cart->update();
+        $this->cartService->update($request, $cart);
         return redirect()->route('admin.carts.index')->with('success', 'Buyurtma yangilandi');
     }
 
@@ -103,10 +109,9 @@ class CartsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Cart $cart)
     {
-        $cart = Cart::findOrFail($id);
-        $cart->delete();
+        $this->cartRepository->delete($cart);
         return redirect()->route('admin.carts.index')->with('success', "Buyurtma bekor qilindi");
     }
 }

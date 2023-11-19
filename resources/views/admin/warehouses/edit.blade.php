@@ -19,17 +19,9 @@
           <div class="form-group">
             <label>Nomi</label>
             <input type="text" value="{{ $warehouse->name}}" name="name" class="form-control @error('name') is-invalid @enderror">
-            @error('name')<div class="invalid-feedback">Oh no! this is invalid.</div>@enderror
+            @error('name') <span style="color: red;">{{ $message }} </span> @enderror
           </div>
-           <div class="form-group">
-            <label>Magazin</label>
-            <select name="shop_id" id="" class="form-control">
-              <option>Select Shop</option>
-              @foreach($shops as $shop)
-              <option {{ $warehouse->shop_id==$shop->id ? 'selected' : '' }} value="{{ $shop->id }}">{{ $shop->name_uz }}</option>
-              @endforeach
-            </select>
-          </div>
+           
           <div class="card-footer text-right">
             <button class="btn btn-primary mr-1" type="submit">Update</button>
           </div>

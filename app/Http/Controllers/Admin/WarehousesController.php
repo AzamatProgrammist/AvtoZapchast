@@ -6,10 +6,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Warehouse;
 use App\Models\Shop;
+use App\Models\User;
 use Str;
+use App\Http\Requests\StoreWarehouseRequest;
+use App\Http\Requests\UpdateWarehouseRequest;
+use Illuminate\Support\Facades\Auth;
 
 class WarehousesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:create ombor', ['only' => ['create', 'store']]);
+        $this->middleware('permission:create ombor', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:create ombor', ['only' => 'destroy']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,8 +27,15 @@ class WarehousesController extends Controller
      */
     public function index()
     {
-        $warehouses = Warehouse::paginate(100);
-        $shops = Shop::all();
+        $usertype = User::findOrFail(Auth::id())->usertype;
+        if($usertype == 1 || $usertype == 2)
+        {
+            $warehouses = Warehouse::paginate(2);
+            $shops = Shop::all();
+        }elseif ($usertype == 0) {
+            $warehouses = Warehouse::where('admin_id', Auth::id())->get();
+            $shops = Shop::where('user_id', Auth::id())->get();            
+        }
         return view('admin.warehouses.index', compact('warehouses', 'shops'));
     }
 
@@ -39,14 +56,13 @@ class WarehousesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreWarehouseRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'shop_id' => 'required',
-        ]);
+        $request->validated();
         $requestDsta=$request->all();
+        $admin_id = Shop::findOrFail($request->shop_id)->user_id;
         $requestDsta['slug']=Str::slug($requestDsta['name']);
+        $requestDsta['admin_id'] = $admin_id;
         Warehouse::create($requestDsta);
         return redirect()->route('admin.warehouses.index')->with('success', 'Shop created successfully');
     }
@@ -83,13 +99,13 @@ class WarehousesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateWarehouseRequest $request, $id)
     {
+        $request->validated();
         $warehouse = Warehouse::findOrFail($id);
         $requestData = $request->all();
         $requestData = [
             'name' => $request->name,
-            'shop_id' => $request->shop_id,
         ];
         $requestData['slug']=Str::slug($request->name);
 

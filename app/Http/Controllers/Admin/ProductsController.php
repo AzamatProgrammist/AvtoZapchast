@@ -5,12 +5,23 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Shop;
-use App\Models\Type;
+use App\Services\ProductService;
+use App\Services\ShopService;
 
 class ProductsController extends Controller
 {
+    public $productService;
+    public $shopService;
+    public function __construct(ProductService $productService, ShopService $shopService)
+    {
+        $this->productService = $productService;
+        $this->shopService = $shopService;
+        $this->middleware('permission:create product', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit product', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete product', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,9 +29,10 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $status = 'badge-success';
-        $products = Product::paginate(100);
-        return view('admin.products.index', compact('products', 'status'));
+        $products = $this->productService->getAll();
+        $sorts = $this->productService->sorts();
+        $shops = $this->shopService->getAll();
+        return view('admin.products.index', compact('products', 'shops', 'sorts'));
     }
 
     /**
@@ -30,9 +42,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        $id = Auth::id();
-        $shops = Shop::where('user_id', $id)->get();
-
+        $shops = $this->shopService->getMainShops();
         return view('admin.products.create', compact('shops'));
     }
 
@@ -44,40 +54,8 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $full_price = $request->olingan_narxi*$request->soni + $request->yuk_narxi*$request->weight;
-        
-        if ($request->file('image')) {
-            
-            $file = $request->file('image');
-            $image_name = time().'.'.$file->getClientOriginalName();
-            $file->move('site/products/images/', $image_name);
-        }
-        $user_id = Shop::findOrFail($request->shop_id)->user_id;
-
-        $requestData = [
-            'name' => $request->name,
-            'Org_Dub' => $request->Org_Dub,
-            'part_number' => $request->part_number,
-            'image' => $image_name,
-            'model' => $request->model,
-            'brendi' => $request->brendi,
-            'markasi' => $request->markasi,
-            'chiqqan_yili' => $request->chiqqan_yili,
-            'kelgan_yili' => $request->kelgan_yili,
-            'size' => $request->size,
-            'full_price' => $full_price,
-            'sotish_narxi' => $request->sotish_narxi,
-            'olingan_narxi' => $request->olingan_narxi,
-            'weight' => $request->weight,
-            'yuk_narxi' => $request->yuk_narxi,
-            'soni' => $request->soni,
-            'ombor_id' => $request->ombor_id,
-            'shop_id' => $request->shop_id,
-            'user_id' => $user_id,
-        ];
-
-        $product = Product::create($requestData);
-        return redirect()->route('admin.products.index')->with('success', 'Product created successfully');       
+        $this->productService->store($request);
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully');
     }
 
     /**
@@ -86,10 +64,12 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = Product::findOrFail($id);
-        return view('admin.products.show', compact('product'));
+        $orders = Order::where('product_id', $product->id)->get();
+        $product_count = $this->productService->product_count($orders);
+        $shops = $this->shopService->getAll();
+        return view('admin.products.show', compact('product', 'orders', 'shops', 'product_count'));
     }
 
     /**
@@ -98,9 +78,8 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
-        $product = Product::findOrFail($id);
         return view('admin.products.edit', compact('product'));
     }
 
@@ -113,49 +92,7 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
-
-        $full_price = $request->olingan_narxi*$request->soni + $request->yuk_narxi*$request->weight;
-        $oldimage = $request->oldimage;
-        $image_name = $oldimage;
-        if ($request->file('image')) {
-            $file = $request->file('image');
-            $image_name = time().'.'.$file->getClientOriginalName();
-            $file->move('site/products/images/', $image_name);
-            if ($oldimage) {
-                if(file_exists('site/products/images/'.$oldimage))
-                {
-                    $rr = file_exists('site/products/images/'.$oldimage);
-                    dd($rr);
-                    unlink('site/products/images/'.$oldimage);
-                }
-            }
-        }
-        $user_id = Shop::findOrFail($request->shop_id)->user_id;
-
-        $requestData = [
-            'name' => $request->name,
-            'Org_Dub' => $request->Org_Dub,
-            'part_number' => $request->part_number,
-            'image' => $image_name,
-            'model' => $request->model,
-            'brendi' => $request->brendi,
-            'markasi' => $request->markasi,
-            'chiqqan_yili' => $request->chiqqan_yili,
-            'kelgan_yili' => $request->kelgan_yili,
-            'size' => $request->size,
-            'full_price' => $full_price,
-            'sotish_narxi' => $request->sotish_narxi,
-            'olingan_narxi' => $request->olingan_narxi,
-            'weight' => $request->weight,
-            'yuk_narxi' => $request->yuk_narxi,
-            'soni' => $request->soni,
-            'ombor_id' => $request->ombor_id,
-            'shop_id' => $request->shop_id,
-            'user_id' => $user_id,
-        ];
-
-        $product->update($requestData);
+        $this->productService->update($request, $id);
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully');
     }
 
@@ -167,15 +104,9 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        $oldimage = Product::findOrFail($id);
-
-        if(file_exists('site/products/images/'.$oldimage->image)){
-        
-            unlink('site/products/images/'.$oldimage->image);
-        
-        }
-        $oldimage->delete();
+        $this->productService->destroy($id);
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully');
 
     }
 }
+

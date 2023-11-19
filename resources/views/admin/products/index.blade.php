@@ -1,18 +1,21 @@
 @extends('layouts.admin')
 
 @section('title')
-    Tavarlar
+    @lang('words.products')
 @endsection
 
 @section('content')
 
+
     <div class="row ">
-        <div class="col-12 col-md-6 col-lg-12">
+        <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <h4>Tavarlar</h4>
+              <h4>@lang('words.products')</h4>
               <div class="card-header-form">
-                <a href="{{ route('admin.products.create') }}" class="btn btn-primary">Qo'shish</a>
+              @can('create product')
+                <a href="{{ route('admin.products.create') }}" class="btn btn-primary">@lang('words.create')</a>
+              @endcan
               </div>
             </div>
             @if(session('success'))
@@ -27,175 +30,184 @@
               @endif
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered table-md">
-                  <tbody><tr>
-                    <th>#</th>
-                    <th>Rasmi</th>
-                    <th>Nomi</th>
-                    <th>Markasi</th>
-                    <th>Brendi</th>
-                    <th>Modeli</th>
-                    <th>Dubl/Org</th>
-                    <th>Part no'mer</th>
-                    <th>Soni</th>
-                    <th>Narxi</th>
-                    <th>Olingan narx</th>
-                    <th>yuk narxi</th>
-                    <th>Kg</th>
-                    <th>To'liq narx</th>
-                    <th>chiqqan yili</th>
-                    <th>kelgan vaqti</th>
-                    <th>O'lchami</th>
-                    <th>Action</th>
-                  </tr>
+                <table
+                          class="table table-striped table-hover"
+                          id="bukabuka"
+                          style="width: 100%"
+                        >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Dubl/Org</th>
+                      <th>Nomi</th>
+                      <th>Model/Marka/Yili</th>
+                      <th>Brend</th>
+                      <th>Narxi</th>
+                      <th>Soni</th>
+                      @role('Adminstrator')
+                        <th>kelgan vaqti</th>
+                      @endrole
+                      <th>Analog</th>
+                      <th>Rasmi</th>
+                      <th>Barcode</th>
+                      <th>Image_path</th>
+                      <th>Part no'mer</th>
+                      @role('Adminstrator')
+                        <th>Olingan narx</th>
+                        <th>yuk narxi</th>
+                        <th>Kg</th>
+                      @endrole
+                      @role('Adminstrator')
+                        <th>To'liq narx</th>
+                      @endrole
+                      <th>O'lchami</th>
+                      @can('edit product')
+                        <th>edit</th>
+                        <th>view</th>
+                      @endcan
+                      @can('delete product')
+                      <th>delete</th>
+                      @endcan
+                    </tr>
+                  </thead>
+                  <tbody>
+                  @foreach($sorts as $sort)
                   @foreach($products as $product)
-                 
+                  @if($sort == $product->analog)
                   <tr>
                     
                     <td>{{ $loop->iteration }}</td>
-                    <td>
-                      <img width="40" src="/site/products/images/{{$product->image}}">
-                    </td>
-                    <td>{{ $product->name }}</td>
-                    <td>{{ $product->markasi }}</td>
-                    <td>{{ $product->brendi }}</td>
-                    <td>{{ $product->model }}</td>
                     <td>{{ $product->Org_Dub }}</td>
-                    <td>{{ $product->part_number }}</td>
-                    <td class="badge @if($product->soni<=25)
-                      {{$status = 'badge-danger'}}
-                    @elseif($product->soni>25 && $product->soni<=75)
-                      {{$status = 'badge-warning'}}
-                    @elseif($product->soni>75)
-                      {{$status = 'badge-success'}}
-                    @endif">{{ $product->soni }}</td>
+                    <td>{{ $product->name }}</td>
+                    <td>{{ $product->model }}/{{ $product->markasi }}/{{ $product->chiqqan_yili }}</td>
+                    <td>{{ $product->brendi }}</td>
                     <td>{{ $product->sotish_narxi }} $</td>
-                    <td>{{ $product->olingan_narxi }} $</td>
-                    <td>{{ $product->yuk_narxi }} $</td>
-                    <td>{{ $product->weight }}</td>
-                    <td>{{ $product->full_price }} $</td>
-                    <td>{{ $product->chiqqan_yili }} </td>
-                    <td>{{ $product->kelgan_yili }}</td>
-                    <td>{{ $product->size }}</td>
+                    <td class="badge @if($product->soni<=$product->little)
+                      {{$status = 'badge-danger'}}
+                    @elseif($product->soni>$product->little && $product->soni<=$product->many)
+                      {{$status = 'badge-warning'}}
+                    @elseif($product->soni>$product->many)
+                      {{$status = 'badge-success'}}
+                    @endif">
                     
+                  
+                    <section class="section"> 
+                      <a class="" type="button" id="dropdownMenuButton3"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ $product->soni }}
+                      </a>
+                            <div class="dropdown-menu">
+
+                              <?php $inkassaSub_num = 0; ?>
+                              
+                              @foreach($shops as $shop)
+                                <?php $num = 0; ?>
+                                @if($shop->user)
+                                  @foreach($product->inkassaSubs as $inkassaSub)
+                                    
+                                    @if($inkassaSub->shop_id == $shop->id)
+                                      <?php 
+                                        $num = $num + $inkassaSub->soni; 
+                                        $inkassaSub_num = $inkassaSub_num + $inkassaSub->soni;
+                                      ?>
+                                    @endif
+                                  @endforeach
+
+                                  @if($num > 0)
+                                      <a class="dropdown-item" href="#">{{ $shop->name_uz }} {{ $num }}</a>
+                                  @endif
+                                  
+                                @endif
+                              @endforeach
+
+                              @foreach($shops as $shop)
+                                @if($shop->user)
+                                @if($shop->user->usertype == 1)
+                                    @if($shop->id == $product->shop_id)
+                                      <a class="dropdown-item" href="#">{{ $shop->name_uz }} {{ $product->soni - $inkassaSub_num }}</a>
+                                    @endif
+                                  @endif
+                                @endif
+                              @endforeach
+                            </div>
+                    </section>
+
+                  </td>
+                    @role('Adminstrator')
+                      <td>{{ $product->kelgan_yili }}</td>
+                    @endrole
+                    <td>{{ $product->analog }}</td>
                     <td>
-                      <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-info">O'zgartirish</a>
-                      <a href="{{ route('admin.products.show', $product->id) }}" class="btn btn-primary">Ko'rish</a>
+                      <img width="40" src="/site/products/images/{{ $product->image }}">
+                    </td>
+
+                  <?php if ($product->barcode === '' || $product->barcode == null) { ?>
+                    <td>
+                      <form action="{{ route('admin.barcodes.generate') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $product->id }}">
+                        <input type="submit" name="generate_barcode" value="generate" class="btn btn-success">
+                      </form>
+                    </td>
+                  <?php } else { ?>
+                    <td>{{ $product->barcode }}</td>
+                  <?php } ?>
+                    @if($product->image_path == NULL || $product->image_path == '')
+                      <td>No Barceode</td>
+                    @else
+                      <td>
+                         <img width="100" src="{{ Storage::url($product->image_path) }}">
+                      </td>
+                    @endif
+
+                    <td>{{ $product->part_number }}</td>
+                    @role('Adminstrator')
+                      <td>{{ $product->olingan_narxi }} $</td>
+                      <td>{{ $product->yuk_narxi }} $</td>
+                    
+                    <td>{{ $product->weight }}</td>
+                    
+                      <td>{{ $product->full_price }} $</td>
+                    @endrole
+                    <td>{{ $product->size }}</td>
+                    @can('edit product')
+                      <td>
+                        <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-info far fa-edit"></a>
+                        
+                      </td>
+                      <td>
+                        <a href="{{ route('admin.products.show', $product->id) }}" class="btn btn-primary fas fa-eye"></a>
+                        
+                      </td>
+                    @endcan
+                    @can('delete product')
+                    <td>
                       <form style="display: inline;" method="POST" action="{{ route('admin.products.destroy', $product->id)}}">
                         @csrf
                         @method('DELETE')
-                        <input class="btn btn-danger" onclick="return confirm('Confirm {{$product->name}} delete')" type="submit" value="Delete">
+                      <button class="btn btn-icon btn-danger" onclick="return confirm('Confirm {{$product->name}} delete')" type="submit"><i class="fas fa-times"></i></button>
                       </form>
                     </td>
+                    @endcan
                   </tr>
+                  @endif
                  @endforeach
-                </tbody></table>
+                 @endforeach
+                </tbody>
+              </table>
               </div>
               </div>
-            <div class="card-footer text-right">
-              <nav class="d-inline-block">
-                <ul class="pagination mb-0">
-                  {{ $products->links() }}
-                </ul>
-              </nav>
-            </div>
+              <div class="card-footer text-right">
+                <nav class="d-inline-block">
+                  <ul class="pagination mb-0">
+                  
+                  </ul>
+                </nav>
+              </div>
           </div>
         </div>      
     </div>
 
-
-
-    <div class="settingSidebar">
-      <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
-      </a>
-      <div class="settingSidebar-body ps-container ps-theme-default">
-        <div class=" fade show active">
-          <div class="setting-panel-header">Setting Panel
-          </div>
-          <div class="p-15 border-bottom">
-            <h6 class="font-medium m-b-10">Select Layout</h6>
-            <div class="selectgroup layout-color w-50">
-              <label class="selectgroup-item">
-                <input type="radio" name="value" value="1" class="selectgroup-input-radio select-layout" checked>
-                <span class="selectgroup-button">Light</span>
-              </label>
-              <label class="selectgroup-item">
-                <input type="radio" name="value" value="2" class="selectgroup-input-radio select-layout">
-                <span class="selectgroup-button">Dark</span>
-              </label>
-            </div>
-          </div>
-          <div class="p-15 border-bottom">
-            <h6 class="font-medium m-b-10">Sidebar Color</h6>
-            <div class="selectgroup selectgroup-pills sidebar-color">
-              <label class="selectgroup-item">
-                <input type="radio" name="icon-input" value="1" class="selectgroup-input select-sidebar">
-                <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                  data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
-              </label>
-              <label class="selectgroup-item">
-                <input type="radio" name="icon-input" value="2" class="selectgroup-input select-sidebar" checked>
-                <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                  data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
-              </label>
-            </div>
-          </div>
-          <div class="p-15 border-bottom">
-            <h6 class="font-medium m-b-10">Color Theme</h6>
-            <div class="theme-setting-options">
-              <ul class="choose-theme list-unstyled mb-0">
-                <li title="white" class="active">
-                  <div class="white"></div>
-                </li>
-                <li title="cyan">
-                  <div class="cyan"></div>
-                </li>
-                <li title="black">
-                  <div class="black"></div>
-                </li>
-                <li title="purple">
-                  <div class="purple"></div>
-                </li>
-                <li title="orange">
-                  <div class="orange"></div>
-                </li>
-                <li title="green">
-                  <div class="green"></div>
-                </li>
-                <li title="red">
-                  <div class="red"></div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="p-15 border-bottom">
-            <div class="theme-setting-options">
-              <label class="m-b-0">
-                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                  id="mini_sidebar_setting">
-                <span class="custom-switch-indicator"></span>
-                <span class="control-label p-l-10">Mini Sidebar</span>
-              </label>
-            </div>
-          </div>
-          <div class="p-15 border-bottom">
-            <div class="theme-setting-options">
-              <label class="m-b-0">
-                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                  id="sticky_header_setting">
-                <span class="custom-switch-indicator"></span>
-                <span class="control-label p-l-10">Sticky Header</span>
-              </label>
-            </div>
-          </div>
-          <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
-            <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
-              <i class="fas fa-undo"></i> Restore Default
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
 
 
 @endsection

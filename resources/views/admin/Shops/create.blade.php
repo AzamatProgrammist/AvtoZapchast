@@ -8,6 +8,7 @@
 
 <div class="row">
     <div class="col-12 col-md-12 col-lg-12">
+      
       <form method="POST" action="{{ route('admin.shops.store')}}">
         @csrf
       <div class="card">
@@ -18,16 +19,21 @@
           <div class="form-group">
             <label>Name</label>
             <input type="text" name="name_uz" class="form-control @error('name_uz') is-invalid @enderror">
-            @error('name_uz')<div class="invalid-feedback">Oh no! This is invalid.</div>@enderror
+            @error('name_uz') <span style="color: red;">{{ $message }} </span> @enderror
+          </div>
+          <div class="form-group">
+            <label>Ombor Name</label>
+            <input type="text" name="omborName" class="form-control @error('omborName') is-invalid @enderror">
+            @error('omborName') <span style="color: red;">{{ $message }} </span> @enderror
           </div>
           <div class="form-group">
             <label>Admin</label>
             <select name="user_id" id="" class="form-control">
-              <option>Select Admin</option>
               @foreach($users as $user)
               <option value="{{ $user->id }}">{{ $user->name }}</option>
               @endforeach
             </select>
+              @error('admin') <span style="color: red;">{{ $message }} </span> </div>@enderror
           </div>
           <div class="form-group">
             <label>Meta title</label>

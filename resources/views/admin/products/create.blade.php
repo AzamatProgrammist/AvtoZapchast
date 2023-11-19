@@ -49,6 +49,10 @@
             <input type="text" name="markasi" class="form-control">
           </div>
           <div class="form-group">
+            <label>Analog</label>
+            <input type="text" name="analog" class="form-control">
+          </div>
+          <div class="form-group">
             <label>Chiqqan yili</label>
             <input type="date" name="chiqqan_yili" class="form-control">
           </div>
@@ -69,8 +73,8 @@
             <input type="text" name="sotish_narxi" class="form-control">
           </div>
           <div class="form-group">
-            <label>Umumiy og'irligi</label>
-            <input type="number" name="weight" class="form-control" placeholder="umumiy og'irligi">
+            <label>Og'irligi(1 dona)</label>
+            <input type="number" name="weight" class="form-control" placeholder="1 ta tavar og'irligi">
           </div>
           <div class="form-group">
             <label>Yuk narxi($)</label>
@@ -81,9 +85,16 @@
             <input type="text" name="soni" class="form-control">
           </div>
           <div class="form-group">
+            <label>Little</label>
+            <input type="text" name="little" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Many</label>
+            <input type="text" name="many" class="form-control">
+          </div>
+          <div class="form-group">
             <label>Shops</label>
             <select name="shop_id" id="" class="form-control">
-              <option>Select Shop</option>
               @foreach($shops as $shop)
               <option value="{{ $shop->id }}">{{ $shop->name_uz }}</option>
               @endforeach
@@ -92,7 +103,6 @@
           <div class="form-group">
             <label>Ombor</label>
             <select name="ombor_id" id="" class="form-control">
-              <option>Select Ombor</option>
               @foreach($shops as $shop)
                 @foreach($shop->warehouses as $warehouse)
                   <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
@@ -100,9 +110,11 @@
               @endforeach
             </select>
           </div>
+          @can('create product')
           <div class="card-footer text-right">
             <button class="btn btn-primary mr-1" type="submit">Save</button>
           </div>
+          @endcan
         </div>
       </div>
     </form>

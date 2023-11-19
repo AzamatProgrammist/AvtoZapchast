@@ -16,6 +16,7 @@ class Product extends Model
         'model',
         'brendi',
         'markasi',
+        'analog',
         'chiqqan_yili',
         'kelgan_yili',
         'size',
@@ -25,8 +26,15 @@ class Product extends Model
         'weight',
         'yuk_narxi',
         'soni',
+        'little',
+        'many',
         'ombor_id',
         'shop_id',
         'user_id',
     ];
+
+    
+    public function inkassaSubs(){
+        return $this->hasMany(InkassaSub::class, 'product_id');
+    }
 }

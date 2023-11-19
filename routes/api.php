@@ -2,6 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\UserAuthController;
+use App\Http\Controllers\API\WarehouseController;
+use App\Http\Controllers\API\ShopsController;
+use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\InkassaOrderController;
+use App\Http\Controllers\API\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +20,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware('auth:api')->group(function()
+{
+
+Route::apiResource('shop', ShopsController::class);
+Route::apiResource('warehouses', WarehouseController::class);
+Route::apiResource('products', ProductController::class);
+Route::apiResource('orders', InkassaOrderController::class);
+Route::post('statistics', [MainController::class, 'statistics'])->name('statistics');
+Route::post('groupByInkassa', [MainController::class, 'groupByInkassa'])->name('groupByInkassa');
+Route::post('update_user', [UserAuthController::class, 'update_user']);
+Route::post('inkassa/search', [MainController::class, 'inkassa_search']);
+});
+ 
+
+Route::post('register', [UserAuthController::class, 'register']);
+Route::post('login', [UserAuthController::class, 'login']);
+
+
