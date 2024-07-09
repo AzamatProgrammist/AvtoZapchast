@@ -41,7 +41,7 @@ class ShopsController extends Controller
         }elseif ($usertype == 0) {
             $shops = Shop::where('user_id', Auth::id())->get();
         }
-        return view('admin.shops.index', ['shops'=>$shops]);
+        return view('admin.Shops.index', ['shops'=>$shops]);
     }
 
     /**
