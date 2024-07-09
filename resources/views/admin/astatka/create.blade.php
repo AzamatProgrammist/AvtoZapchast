@@ -123,7 +123,7 @@
 
             var hiddenData = $('#hiddenDataInput').val();
             var textData = $('#textDataInput').val();
-
+console.log(textData);
             $.ajax({
                 url: '/admin/barcodes/barcode',
                 method: 'POST',
@@ -182,6 +182,7 @@
                     console.log(error);
                 }
             });
+                    document.getElementById('textDataInput').value = '';
         });
         
     });
